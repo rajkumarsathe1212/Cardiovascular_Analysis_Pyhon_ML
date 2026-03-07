@@ -48,3 +48,32 @@ These parameters are used by the machine learning model to predict the risk of h
 - Role-based login system (Admin / Doctor)
 
 ## Project Structure
+app.py → Main Streamlit application
+heart_model.pkl → Trained machine learning model
+scaler.pkl → Feature scaling model
+cardio_project.ipynb → Model training notebook
+cardio_train.csv → Dataset used for training
+requirements.txt → Project dependencies
+README.md → Project documentation
+
+
+## How the System Works
+
+1. Doctor logs into the system.
+2. Patient health parameters are entered.
+3. The system processes the input data.
+4. The machine learning model predicts cardiovascular disease risk.
+5. The result is displayed along with risk percentage.
+6. Patient data is stored in the database.
+7. Doctors can generate PDF health reports.
+8. Admin can view, edit, and delete records.
+
+## Deployment
+
+The application can be deployed using Streamlit Cloud by connecting the GitHub repository.
+
+## Author
+
+Rajkumar Sathe  
+MCA Project  
+Shivaji University
