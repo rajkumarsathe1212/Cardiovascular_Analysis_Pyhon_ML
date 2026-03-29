@@ -27,7 +27,6 @@ patients.db
 *.tmp
 database.py
 login.py
-*.pkl
 
 # Dataset
 cardio_train.csv
