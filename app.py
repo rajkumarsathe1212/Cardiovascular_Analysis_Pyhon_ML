@@ -86,6 +86,14 @@ def init_db():
 init_db()
 
 
+def classify_risk(probability):
+    if probability > 70:
+        return "High Risk"
+    if probability > 40:
+        return "Moderate Risk"
+    return "Low Risk"
+
+
 # ---------------- LOGIN CHECK ----------------
 
 if not st.session_state.logged_in:
@@ -245,7 +253,7 @@ with tab2:
             input_scaled = scaler.transform(input_data)
             prediction   = model.predict(input_scaled)[0]
             probability  = model.predict_proba(input_scaled)[0][1] * 100
-            result       = "High Risk" if prediction == 1 else "Low Risk"
+            result       = classify_risk(probability)
 
             # ⭐ FIXED: Calculate BMI category HERE (after bmi is defined)
             if bmi < 18.5:
@@ -258,6 +266,7 @@ with tab2:
                 bmi_category = "Obese"
 
             st.session_state.prediction_result = {
+                "model_prediction": int(prediction),
                 "risk": probability,
                 "result": result,
                 "bmi": bmi,
@@ -301,14 +310,19 @@ with tab2:
         st.info(f"**BMI**: {res['bmi']:.2f} kg/m² → **{res['bmi_category']}**")
         if res["result"] == "High Risk":
             st.error(f"⚠ High Risk ({res['risk']:.1f}%)")
+        elif res["result"] == "Moderate Risk":
+            st.warning(f"Moderate Risk ({res['risk']:.1f}%)")
         else:
             st.success(f"✅ Low Risk ({res['risk']:.1f}%)")
 
         st.progress(int(res["risk"]))
 
-        if res["risk"] > 70:   st.error("Immediate consultation recommended")
-        elif res["risk"] > 40: st.warning("Moderate risk – lifestyle changes advised")
-        else:                  st.success("Low cardiovascular risk")
+        if res["result"] == "High Risk":
+            st.error("Immediate consultation recommended")
+        elif res["result"] == "Moderate Risk":
+            st.warning("Moderate risk - lifestyle changes advised")
+        else:
+            st.success("Low cardiovascular risk")
 
         st.subheader("Heart Risk Gauge")
         fig = go.Figure(go.Indicator(
@@ -559,13 +573,15 @@ with tab4:
 
         total_patients = len(df)
         high_risk = len(df[df["prediction"] == "High Risk"])
+        moderate_risk = len(df[df["prediction"] == "Moderate Risk"])
         low_risk = len(df[df["prediction"] == "Low Risk"])
 
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3, col4 = st.columns(4)
 
         col1.metric("Total Patients", total_patients)
         col2.metric("High Risk Cases", high_risk)
-        col3.metric("Low Risk Cases", low_risk)
+        col3.metric("Moderate Risk Cases", moderate_risk)
+        col4.metric("Low Risk Cases", low_risk)
 
         st.markdown("---")
 
