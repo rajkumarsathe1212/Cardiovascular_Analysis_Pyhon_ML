@@ -1,0 +1,33 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Database file (do not upload local database)
+patients.db
+
+# VS Code settings
+.vscode/
+
+# Temporary files
+*.log
+*.tmp
+database.py
+login.py
+*.pkl
+
+# Dataset
+cardio_train.csv
